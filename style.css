@@ -62,7 +62,8 @@ header {
 .navmenu a:hover, .navmenu a.active {
     transform: translateY(-5px);
     background-color: black;
-    color: white;
+    border: solid, 1px:
+    border-radius: 1px;
 }
 
 /* --- SLIDER LOGIC --- */
@@ -189,4 +190,5 @@ header {
     .social-panel, .socials-icons { flex-direction: row; margin-bottom: 1rem; }
     .home-text h3::before { display: none; }
     .slide__content { padding-top: 6rem; }
+
 }
