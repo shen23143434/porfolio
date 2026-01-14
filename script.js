@@ -25,8 +25,25 @@
         // CLICK HANDLER FOR HEADER NAVIGATION
         s.navLinks.on('click', function(e){
             e.preventDefault();
+            
             // Get the index from data-index="x"
             var index = $(this).data('index');
+
+            // Play Sound
+            var soundFile;
+            if (index == 1) {
+                soundFile = 'fahhhhhhhhhhhhhh.mp3';
+            } else if (index == 2) {
+                soundFile = 'tuco-get-out.mp3';
+            } else {
+                soundFile = 'Bruh sound effect.mp3';
+            }
+            
+            var audio = new Audio(soundFile);
+            audio.play().catch(function(error) {
+                console.log("Audio play failed: " + error);
+            });
+
             s.currentSlideIndex = index;
             SliceSlider.showSlide();
         });
