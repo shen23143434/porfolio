@@ -29,20 +29,7 @@
             // Get the index from data-index="x"
             var index = $(this).data('index');
 
-            // Play Sound
-            var soundFile;
-            if (index == 1) {
-                soundFile = 'fahhhhhhhhhhhhhh.mp3';
-            } else if (index == 2) {
-                soundFile = 'tuco-get-out.mp3';
-            } else {
-                soundFile = 'Bruh sound effect.mp3';
-            }
-            
-            var audio = new Audio(soundFile);
-            audio.play().catch(function(error) {
-                console.log("Audio play failed: " + error);
-            });
+
 
             s.currentSlideIndex = index;
             SliceSlider.showSlide();
@@ -92,3 +79,25 @@
     };
     SliceSlider.init();
   })(jQuery);
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+    updateIcon();
+});
+
+function updateIcon() {
+    const theme = localStorage.getItem('theme');
+    const icon = theme === 'dark' ? 'ph-moon' : 'ph-sun';
+    themeToggle.innerHTML = `<i class='ph-bold ${icon}'></i>`;
+}
+
+// Check for saved theme in local storage
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    body.classList.add('dark-mode');
+}
+updateIcon();
