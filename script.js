@@ -11,6 +11,33 @@
       init: function() {
         s = this.settings;
         this.bindEvents();
+
+        // Dynamically set the form's return URL to the current page URL with a success flag
+        var nextUrlInput = document.getElementById('next-url');
+        if(nextUrlInput) {
+            var baseUrl = window.location.href.split('?')[0]; // Get URL without parameters
+            nextUrlInput.value = baseUrl + '?success=true';
+        }
+
+        // Check if we just successfully submitted the form
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+            // Show SweetAlert
+            Swal.fire({
+                title: 'Success!',
+                text: 'Your message has been sent. I will get back to you soon!',
+                icon: 'success',
+                confirmButtonText: 'Awesome',
+                confirmButtonColor: '#1e1e24'
+            });
+
+            // Navigate to the contact slide (index 4)
+            s.currentSlideIndex = 4;
+            this.showSlide();
+
+            // Clean up the URL so it doesn't show next time you refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
       },
       bindEvents: function(){
         // Mouse Scroll
@@ -29,21 +56,6 @@
             // Get the index from data-index="x"
             var index = $(this).data('index');
 
-            // Play Sound
-            var soundFile;
-            if (index == 1) {
-                soundFile = 'fahhhhhhhhhhhhhh.mp3';
-            } else if (index == 2) {
-                soundFile = 'tuco-get-out.mp3';
-            } else {
-                soundFile = 'Bruh sound effect.mp3';
-            }
-            
-            var audio = new Audio(soundFile);
-            audio.play().catch(function(error) {
-                console.log("Audio play failed: " + error);
-            });
-
             s.currentSlideIndex = index;
             SliceSlider.showSlide();
         });
@@ -53,6 +65,25 @@
             e.preventDefault();
             s.currentSlideIndex = 4; // Index 4 is the Contact Slide
             SliceSlider.showSlide();
+        });
+
+        // Handler for "Send Message" button in Contact
+        $('.js-send-email').on('click', function(e){
+            e.preventDefault();
+            
+            var name = $('#contact-name').val();
+            var email = $('#contact-email').val();
+            var message = $('#contact-message').val();
+            
+            if(!name || !email || !message) {
+                alert("Please fill in all fields.");
+                return;
+            }
+            
+            var subject = encodeURIComponent("Portfolio Contact from " + name);
+            var body = encodeURIComponent("Name: " + name + "\nEmail: " + email + "\n\nMessage:\n" + message);
+            
+            window.location.href = "mailto:lastydante1@gmail.com?subject=" + subject + "&body=" + body;
         });
       },
       handleScroll: function(e){
